@@ -2,6 +2,7 @@
 // Namespace
 namespace Listener;
 
+use \Util\Util;
 /**
  *
  * @package IRCBot
@@ -10,13 +11,20 @@ namespace Listener;
  */
 class Joins extends \Library\IRC\Listener\Base {
 
+
+    protected $util;
+
+    public function __construct(){
+        $this->util = new Util();
+    }
+
     /**
      * Main function to execute when listen even occurs
      */
     public function execute($data) {
         $args = $this->getArguments($data);
 
-        $this->say($this->getUserNickName($args[0]) . ", welcome to channel " . $args[2] . ". Try following commands: " . $this->getCommandsName(), $args[2]);
+        $this->say($this->util->getUserNickName($args[0]) . ", welcome to channel " . $args[2] . ". I am your servant, and can be instructed with the following: " . $this->getCommandsName(), $args[2]);
     }
 
     private function getCommandsName() {
@@ -31,15 +39,6 @@ class Joins extends \Library\IRC\Listener\Base {
         return implode(", ", $names);
     }
 
-    private function getUserNickName($data) {
-        $result = preg_match('/:([a-zA-Z0-9_]+)!/', $data, $matches);
-
-        if ($result !== false) {
-            return $matches[1];
-        }
-
-        return false;
-    }
 
     /**
      * Returns keywords that listener is listening to.
