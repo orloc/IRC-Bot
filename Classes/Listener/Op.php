@@ -24,7 +24,9 @@ class Op extends BaseListener {
         $args = $this->getArguments($data);
 
         if (in_array(($name = $this->util->getUserNickName($args[0])), $this->names)){
-            $this->say('/op' . " $name", $args[2]);
+            $this->connection->sendData(
+                "MODE {$args[2]} +o $name"
+            );
         }
 
     }
